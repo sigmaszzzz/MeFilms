@@ -11,42 +11,91 @@
       color: #fff;
       margin: 0;
       padding: 2rem;
+      transition: background-color 0.3s ease;
     }
+
     h1 {
       text-align: center;
       margin-bottom: 2rem;
+      font-size: 2.5rem;
+      transition: color 0.3s ease;
     }
+
     input {
       display: block;
       margin: 0 auto 2rem;
-      padding: 0.5rem;
+      padding: 0.75rem;
       width: 300px;
+      border-radius: 5px;
+      border: none;
+      font-size: 1rem;
+      background-color: #222;
+      color: #fff;
+      transition: background-color 0.3s ease;
     }
+
+    input:focus {
+      background-color: #333;
+      outline: none;
+    }
+
     select {
       display: block;
       margin: 0 auto 2rem;
-      padding: 0.5rem;
+      padding: 0.75rem;
+      border-radius: 5px;
+      font-size: 1rem;
+      background-color: #222;
+      color: #fff;
+      border: none;
+      transition: background-color 0.3s ease;
     }
+
+    select:focus {
+      background-color: #333;
+      outline: none;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 2rem;
+      transition: grid-template-columns 0.3s ease;
     }
+
     .card {
       background-color: #222;
       padding: 1rem;
       border-radius: 10px;
       text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.7);
+    }
+
     .card img {
       max-width: 100px;
       height: auto;
       margin-bottom: 1rem;
+      transition: transform 0.3s ease;
     }
+
+    .card:hover img {
+      transform: scale(1.1);
+    }
+
     .price {
       color: #0f0;
       font-weight: bold;
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      margin: 1rem 0;
     }
   </style>
 </head>
@@ -119,40 +168,46 @@
     { name: "Vimeo", price: 7.99, image: "https://upload.wikimedia.org/wikipedia/commons/9/9c/Vimeo_logo.svg", link: "https://www.vimeo.com" },
     { name: "Dailymotion", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/0/04/Dailymotion_logo.svg", link: "https://www.dailymotion.com" }
   ];
+  const platformsContainer = document.getElementById("platforms");
+  const searchInput = document.getElementById("search");
+  const sortSelect = document.getElementById("sort");
 
-    const container = document.getElementById("platforms");
-    const search = document.getElementById("search");
-    const sort = document.getElementById("sort");
+  function renderPlatforms(platformsList) {
+    platformsContainer.innerHTML = "";
+    platformsList.forEach((platform) => {
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.innerHTML = `
+        <a href="${platform.link}" target="_blank">
+          <img src="${platform.image}" alt="${platform.name}" />
+          <h3>${platform.name}</h3>
+          <p class="price">$${platform.price.toFixed(2)}</p>
+        </a>
+      `;
+      platformsContainer.appendChild(card);
+    });
+  }
 
-    function renderPlatforms(list) {
-      container.innerHTML = "";
-      list.forEach(p => {
-        container.innerHTML += `
-          <div class="card">
-            <img src="${p.image}" alt="${p.name}" />
-            <h3>${p.name}</h3>
-            <p class="price">$${p.price.toFixed(2)}</p>
-          </div>
-        `;
-      });
+  function filterAndSortPlatforms() {
+    const query = searchInput.value.toLowerCase();
+    const filteredPlatforms = platforms.filter(platform => platform.name.toLowerCase().includes(query));
+
+    const sortValue = sortSelect.value;
+    let sortedPlatforms = [...filteredPlatforms];
+
+    if (sortValue === "price-asc") {
+      sortedPlatforms.sort((a, b) => a.price - b.price);
+    } else if (sortValue === "price-desc") {
+      sortedPlatforms.sort((a, b) => b.price - a.price);
     }
 
-    function filterAndSort() {
-      let filtered = platforms.filter(p => p.name.toLowerCase().includes(search.value.toLowerCase()));
+    renderPlatforms(sortedPlatforms);
+  }
 
-      if (sort.value === "price-asc") {
-        filtered.sort((a, b) => a.price - b.price);
-      } else if (sort.value === "price-desc") {
-        filtered.sort((a, b) => b.price - a.price);
-      }
+  searchInput.addEventListener("input", filterAndSortPlatforms);
+  sortSelect.addEventListener("change", filterAndSortPlatforms);
 
-      renderPlatforms(filtered);
-    }
-
-    search.addEventListener("input", filterAndSort);
-    sort.addEventListener("change", filterAndSort);
-
-    renderPlatforms(platforms);
-  </script>
+  renderPlatforms(platforms); // Initial render
+</script>
 </body>
 </html>
