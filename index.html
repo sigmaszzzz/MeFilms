@@ -25,6 +25,20 @@
       background-color: #333;
       border-radius: 10px;
     }
+
+    .btn {
+      background-color: #ef4444;
+      color: white;
+      padding: 0.5rem 1.5rem;
+      font-weight: 600;
+      border-radius: 9999px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #dc2626;
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body class="bg-zinc-900 text-white min-h-screen flex flex-col items-center p-6">
@@ -83,10 +97,19 @@
       </div>
     </div>
 
-    <div class="flex justify-center">
+    <!-- Watch More on YouTube Button -->
+    <div class="flex justify-center mt-8">
       <a href="https://www.youtube.com/@OfficialMeFilms" target="_blank"
-        class="mt-10 inline-block bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full font-semibold">
+        class="btn">
         🔗 Watch More on YouTube
+      </a>
+    </div>
+
+    <!-- Shop Merch Button -->
+    <div class="flex justify-center mt-6">
+      <a href="https://mefilms.store" target="_blank"
+        class="btn bg-blue-600 hover:bg-blue-700">
+        🛒 Shop Merch
       </a>
     </div>
 
