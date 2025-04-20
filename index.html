@@ -9,7 +9,7 @@
     .fade-out {
       opacity: 0;
       visibility: hidden;
-      transition: opacity 1s ease, visibility 1s ease;
+      transition: opacity 0.5s ease, visibility 0.5s ease; /* Faster fade */
     }
 
     .hover-zoom {
@@ -19,6 +19,11 @@
     .hover-zoom:hover {
       transform: scale(1.05);
       z-index: 10;
+    }
+
+    iframe {
+      background-color: #333;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -38,11 +43,44 @@
       Latest videos by <a href="https://www.youtube.com/@OfficialMeFilms" class="text-red-400 underline" target="_blank">@OfficialMeFilms</a>
     </p>
 
+    <!-- Video grid -->
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-      <iframe class="w-full aspect-video rounded-xl border border-zinc-700 hover-zoom"
-        src="https://www.youtube.com/embed?listType=user_uploads&list=OfficialMeFilms"
-        frameborder="0" allowfullscreen>
-      </iframe>
+      <!-- YouTube Embed links -->
+      <div class="hover-zoom">
+        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
+          data-src="https://www.youtube.com/embed/67WUf2D-6Mo" frameborder="0" allowfullscreen loading="lazy">
+        </iframe>
+      </div>
+      <div class="hover-zoom">
+        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
+          data-src="https://www.youtube.com/embed/lHrLIlU5Grs" frameborder="0" allowfullscreen loading="lazy">
+        </iframe>
+      </div>
+      <div class="hover-zoom">
+        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
+          data-src="https://www.youtube.com/embed/8Yc-mRX5yxE" frameborder="0" allowfullscreen loading="lazy">
+        </iframe>
+      </div>
+      <div class="hover-zoom">
+        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
+          data-src="https://www.youtube.com/embed/34keS3Lq9b0" frameborder="0" allowfullscreen loading="lazy">
+        </iframe>
+      </div>
+      <div class="hover-zoom">
+        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
+          data-src="https://www.youtube.com/embed/PmpcuAAcFZY" frameborder="0" allowfullscreen loading="lazy">
+        </iframe>
+      </div>
+      <div class="hover-zoom">
+        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
+          data-src="https://www.youtube.com/embed/RBkGentm2Uk" frameborder="0" allowfullscreen loading="lazy">
+        </iframe>
+      </div>
+      <div class="hover-zoom">
+        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
+          data-src="https://www.youtube.com/embed/p_MVId2ij6Q" frameborder="0" allowfullscreen loading="lazy">
+        </iframe>
+      </div>
     </div>
 
     <div class="flex justify-center">
@@ -54,17 +92,27 @@
 
   </div>
 
-  <!-- 💻 JS to handle loader -->
+  <!-- 💻 JS to handle loader and lazyload -->
   <script>
+    // Lazy load the YouTube embeds by changing data-src to src
     window.addEventListener("load", () => {
       const loader = document.getElementById("loader");
       const content = document.getElementById("content");
 
+      // Fade out loader immediately
       loader.classList.add("fade-out");
+
+      // After fade-out, hide the loader and show content
       setTimeout(() => {
         loader.style.display = "none";
         content.classList.remove("opacity-0");
-      }, 1000);
+      }, 500);  // 0.5s fade-out transition
+
+      // Lazy loading iframes
+      const iframes = document.querySelectorAll('iframe[data-src]');
+      iframes.forEach(iframe => {
+        iframe.src = iframe.getAttribute('data-src');
+      });
     });
   </script>
 
