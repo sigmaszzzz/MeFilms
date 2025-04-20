@@ -3,141 +3,156 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OfficialMeFilms 🎬</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Top 100 Streaming Platforms</title>
   <style>
-    .fade-out {
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.5s ease, visibility 0.5s ease; /* Faster fade */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
     }
-
-    .hover-zoom {
-      transition: transform 0.4s ease;
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
     }
-
-    .hover-zoom:hover {
-      transform: scale(1.05);
-      z-index: 10;
+    input {
+      display: block;
+      margin: 0 auto 2rem;
+      padding: 0.5rem;
+      width: 300px;
     }
-
-    iframe {
-      background-color: #333;
+    select {
+      display: block;
+      margin: 0 auto 2rem;
+      padding: 0.5rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+    .card {
+      background-color: #222;
+      padding: 1rem;
       border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
-
-    .btn {
-      background-color: #ef4444;
-      color: white;
-      padding: 0.5rem 1.5rem;
-      font-weight: 600;
-      border-radius: 9999px;
-      transition: background-color 0.3s ease, transform 0.3s ease;
+    .card img {
+      max-width: 100px;
+      height: auto;
+      margin-bottom: 1rem;
     }
-
-    .btn:hover {
-      background-color: #dc2626;
-      transform: scale(1.05);
+    .price {
+      color: #0f0;
+      font-weight: bold;
     }
   </style>
 </head>
-<body class="bg-zinc-900 text-white min-h-screen flex flex-col items-center p-6">
+<body>
+  <h1>Top 100 Streaming Platforms</h1>
+  <input type="text" id="search" placeholder="Search platform name...">
+  <select id="sort">
+    <option value="default">Sort by</option>
+    <option value="price-asc">Cheapest First</option>
+    <option value="price-desc">Most Expensive First</option>
+  </select>
+  <div class="grid" id="platforms"></div>
 
-  <!-- 🔄 Loading screen -->
-  <div id="loader" class="fixed inset-0 bg-zinc-900 flex flex-col items-center justify-center z-50">
-    <div class="animate-spin rounded-full h-16 w-16 border-4 border-red-500 border-t-transparent mb-6"></div>
-    <h2 class="text-2xl font-bold">Loading OfficialMeFilms...</h2>
-  </div>
+<script>
+  const platforms = [
+    { name: "Netflix", price: 15.49, image: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg", link: "https://www.netflix.com" },
+    { name: "Hulu", price: 7.99, image: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Hulu_Logo.svg", link: "https://www.hulu.com" },
+    { name: "Disney+", price: 10.99, image: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg", link: "https://www.disneyplus.com" },
+    { name: "HBO Max", price: 14.99, image: "https://upload.wikimedia.org/wikipedia/commons/1/17/HBO_Max_Logo.svg", link: "https://www.max.com" },
+    { name: "Amazon Prime Video", price: 8.99, image: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png", link: "https://www.primevideo.com" },
+    { name: "Apple TV+", price: 6.99, image: "https://upload.wikimedia.org/wikipedia/commons/1/1b/Apple_TV_Plus_Logo.svg", link: "https://tv.apple.com" },
+    { name: "Peacock", price: 5.99, image: "https://upload.wikimedia.org/wikipedia/commons/9/9f/Peacock_Logo_2020.svg", link: "https://www.peacocktv.com" },
+    { name: "Paramount+", price: 5.99, image: "https://upload.wikimedia.org/wikipedia/commons/0/09/Paramount%2B_Logo.svg", link: "https://www.paramountplus.com" },
+    { name: "Showtime", price: 10.99, image: "https://upload.wikimedia.org/wikipedia/commons/1/19/Showtime_Logo.svg", link: "https://www.showtime.com" },
+    { name: "Starz", price: 8.99, image: "https://upload.wikimedia.org/wikipedia/commons/3/3d/Starz_2021.svg", link: "https://www.starz.com" },
+    { name: "Crunchyroll", price: 7.99, image: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Crunchyroll_Logo.svg", link: "https://www.crunchyroll.com" },
+    { name: "Discovery+", price: 6.99, image: "https://upload.wikimedia.org/wikipedia/commons/6/69/Discovery%2B_logo.svg", link: "https://www.discoveryplus.com" },
+    { name: "BritBox", price: 7.99, image: "https://upload.wikimedia.org/wikipedia/commons/f/fc/BritBox_Logo.svg", link: "https://www.britbox.com" },
+    { name: "YouTube Premium", price: 11.99, image: "https://upload.wikimedia.org/wikipedia/commons/7/75/YouTube_Premium_logo.svg", link: "https://www.youtube.com/premium" },
+    { name: "Sling TV", price: 40.00, image: "https://upload.wikimedia.org/wikipedia/commons/2/20/Sling_TV_logo_2020.svg", link: "https://www.sling.com" },
+    { name: "Philo", price: 25.00, image: "https://upload.wikimedia.org/wikipedia/commons/e/e5/Philo_TV_logo.svg", link: "https://www.philo.com" },
+    { name: "FuboTV", price: 74.99, image: "https://upload.wikimedia.org/wikipedia/commons/f/fd/FuboTV_logo.svg", link: "https://www.fubo.tv" },
+    { name: "Tubi", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/e/e7/Tubi_logo_2021.svg", link: "https://www.tubitv.com" },
+    { name: "Pluto TV", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Pluto_TV_2020.svg", link: "https://www.pluto.tv" },
+    { name: "Crackle", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/6/68/Crackle_logo.svg", link: "https://www.crackle.com" },
+    { name: "Spotify", price: 9.99, image: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Spotify_logo_with_text.svg", link: "https://www.spotify.com" },
+    { name: "Apple Music", price: 9.99, image: "https://upload.wikimedia.org/wikipedia/commons/4/42/Apple_Music_logo.svg", link: "https://www.apple.com/music" },
+    { name: "Tidal", price: 9.99, image: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Tidal_logo.svg", link: "https://www.tidal.com" },
+    { name: "YouTube Music", price: 9.99, image: "https://upload.wikimedia.org/wikipedia/commons/1/1f/YouTube_Music_logo.svg", link: "https://music.youtube.com" },
+    { name: "Pandora", price: 4.99, image: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Pandora_logo_2020.svg", link: "https://www.pandora.com" },
+    { name: "Amazon Music", price: 8.99, image: "https://upload.wikimedia.org/wikipedia/commons/e/e8/Amazon_Music_logo.svg", link: "https://music.amazon.com" },
+    { name: "SoundCloud", price: 9.99, image: "https://upload.wikimedia.org/wikipedia/commons/4/44/SoundCloud_logo.svg", link: "https://soundcloud.com" },
+    { name: "Deezer", price: 9.99, image: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Deezer_Logo.svg", link: "https://www.deezer.com" },
+    { name: "iHeartRadio", price: 5.99, image: "https://upload.wikimedia.org/wikipedia/commons/e/ec/IheartRadio_logo.svg", link: "https://www.iheart.com" },
+    { name: "Mixcloud", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/9/91/Mixcloud_logo.svg", link: "https://www.mixcloud.com" },
+    { name: "Napster", price: 9.99, image: "https://upload.wikimedia.org/wikipedia/commons/e/eb/Napster_logo.svg", link: "https://www.napster.com" },
+    { name: "Vudu", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/4/4a/Vudu_logo.svg", link: "https://www.vudu.com" },
+    { name: "Google Play Music", price: 9.99, image: "https://upload.wikimedia.org/wikipedia/commons/3/32/Google_Play_Music_logo.svg", link: "https://play.google.com/music" },
+    { name: "Shazam", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Shazam_logo.svg", link: "https://www.shazam.com" },
+    { name: "Bandcamp", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/c/c9/Bandcamp_logo.svg", link: "https://www.bandcamp.com" },
+    { name: "Rhapsody", price: 9.99, image: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Rhapsody_logo.svg", link: "https://www.rhapsody.com" },
+    { name: "JioSaavn", price: 2.99, image: "https://upload.wikimedia.org/wikipedia/commons/7/7d/JioSaavn_logo.svg", link: "https://www.jiosaavn.com" },
+    { name: "Gaana", price: 1.99, image: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Gaana_logo.svg", link: "https://www.gaana.com" },
+    { name: "Anghami", price: 4.99, image: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Anghami_Logo.svg", link: "https://www.anghami.com" },
+    { name: "TuneIn", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/4/4f/TuneIn_logo.svg", link: "https://tunein.com" },
+    { name: "Yandex Music", price: 4.99, image: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Yandex_Music_logo.svg", link: "https://music.yandex.com" },
+    { name: "Radio.com", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Radio_com_logo.svg", link: "https://www.radio.com" },
+    { name: "8tracks", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/0/0d/8tracks_logo.svg", link: "https://8tracks.com" },
+    { name: "MixRadio", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/6/6b/MixRadio_logo.svg", link: "https://www.mixradio.com" },
+    { name: "Songza", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/a/a0/Songza_logo.svg", link: "https://songza.com" },
+    { name: "Zvooq", price: 1.99, image: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Zvooq_logo.svg", link: "https://www.zvooq.com" },
+    { name: "Jango", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/4/43/Jango_logo.svg", link: "https://www.jango.com" },
+    { name: "Audiomack", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/9/95/Audiomack_logo.svg", link: "https://www.audiomack.com" },
+    { name: "ReverbNation", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/7/72/ReverbNation_logo.svg", link: "https://www.reverbnation.com" },
+    { name: "Saavn", price: 3.99, image: "https://upload.wikimedia.org/wikipedia/commons/f/f7/Saavn_logo.svg", link: "https://www.saavn.com" },
+    { name: "SoundHound", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/2/26/SoundHound_logo.svg", link: "https://www.soundhound.com" },
+    { name: "Pandora Premium", price: 9.99, image: "https://upload.wikimedia.org/wikipedia/commons/c/ca/Pandora_Premium_logo.svg", link: "https://www.pandora.com" },
+    { name: "Airtel Xstream", price: 2.99, image: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Airtel_Xstream_logo.svg", link: "https://www.airtel.in/xstream" },
+    { name: "Triller", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/3/33/Triller_Logo.svg", link: "https://triller.co" },
+    { name: "Vimeo", price: 7.99, image: "https://upload.wikimedia.org/wikipedia/commons/9/9c/Vimeo_logo.svg", link: "https://www.vimeo.com" },
+    { name: "Dailymotion", price: 0.00, image: "https://upload.wikimedia.org/wikipedia/commons/0/04/Dailymotion_logo.svg", link: "https://www.dailymotion.com" }
+  ];
 
-  <!-- 🌐 Main content -->
-  <div id="content" class="opacity-0 transition-opacity duration-1000 w-full max-w-7xl">
+    const container = document.getElementById("platforms");
+    const search = document.getElementById("search");
+    const sort = document.getElementById("sort");
 
-    <h1 class="text-4xl font-bold mt-12 text-center">🎥 OfficialMeFilms</h1>
-    <p class="text-zinc-400 text-sm mb-8 text-center">
-      Latest videos by <a href="https://www.youtube.com/@OfficialMeFilms" class="text-red-400 underline" target="_blank">@OfficialMeFilms</a>
-    </p>
-
-    <!-- Video grid -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-      <!-- YouTube Embed links -->
-      <div class="hover-zoom">
-        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
-          data-src="https://www.youtube.com/embed/67WUf2D-6Mo" frameborder="0" allowfullscreen loading="lazy">
-        </iframe>
-      </div>
-      <div class="hover-zoom">
-        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
-          data-src="https://www.youtube.com/embed/lHrLIlU5Grs" frameborder="0" allowfullscreen loading="lazy">
-        </iframe>
-      </div>
-      <div class="hover-zoom">
-        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
-          data-src="https://www.youtube.com/embed/8Yc-mRX5yxE" frameborder="0" allowfullscreen loading="lazy">
-        </iframe>
-      </div>
-      <div class="hover-zoom">
-        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
-          data-src="https://www.youtube.com/embed/34keS3Lq9b0" frameborder="0" allowfullscreen loading="lazy">
-        </iframe>
-      </div>
-      <div class="hover-zoom">
-        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
-          data-src="https://www.youtube.com/embed/PmpcuAAcFZY" frameborder="0" allowfullscreen loading="lazy">
-        </iframe>
-      </div>
-      <div class="hover-zoom">
-        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
-          data-src="https://www.youtube.com/embed/RBkGentm2Uk" frameborder="0" allowfullscreen loading="lazy">
-        </iframe>
-      </div>
-      <div class="hover-zoom">
-        <iframe class="w-full aspect-video rounded-xl border border-zinc-700"
-          data-src="https://www.youtube.com/embed/p_MVId2ij6Q" frameborder="0" allowfullscreen loading="lazy">
-        </iframe>
-      </div>
-    </div>
-
-    <!-- Watch More on YouTube Button -->
-    <div class="flex justify-center mt-8">
-      <a href="https://www.youtube.com/@OfficialMeFilms" target="_blank"
-        class="btn">
-        🔗 Watch More on YouTube
-      </a>
-    </div>
-
-    <!-- Shop Merch Button -->
-    <div class="flex justify-center mt-6">
-      <a href="https://mefilms.store" target="_blank"
-        class="btn bg-blue-600 hover:bg-blue-700">
-        🛒 Shop Merch
-      </a>
-    </div>
-
-  </div>
-
-  <!-- 💻 JS to handle loader and lazyload -->
-  <script>
-    // Lazy load the YouTube embeds by changing data-src to src
-    window.addEventListener("load", () => {
-      const loader = document.getElementById("loader");
-      const content = document.getElementById("content");
-
-      // Fade out loader immediately
-      loader.classList.add("fade-out");
-
-      // After fade-out, hide the loader and show content
-      setTimeout(() => {
-        loader.style.display = "none";
-        content.classList.remove("opacity-0");
-      }, 500);  // 0.5s fade-out transition
-
-      // Lazy loading iframes
-      const iframes = document.querySelectorAll('iframe[data-src]');
-      iframes.forEach(iframe => {
-        iframe.src = iframe.getAttribute('data-src');
+    function renderPlatforms(list) {
+      container.innerHTML = "";
+      list.forEach(p => {
+        container.innerHTML += `
+          <div class="card">
+            <img src="${p.image}" alt="${p.name}" />
+            <h3>${p.name}</h3>
+            <p class="price">$${p.price.toFixed(2)}</p>
+          </div>
+        `;
       });
-    });
-  </script>
+    }
 
+    function filterAndSort() {
+      let filtered = platforms.filter(p => p.name.toLowerCase().includes(search.value.toLowerCase()));
+
+      if (sort.value === "price-asc") {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sort.value === "price-desc") {
+        filtered.sort((a, b) => b.price - a.price);
+      }
+
+      renderPlatforms(filtered);
+    }
+
+    search.addEventListener("input", filterAndSort);
+    sort.addEventListener("change", filterAndSort);
+
+    renderPlatforms(platforms);
+  </script>
 </body>
 </html>
