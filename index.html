@@ -1,42 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign Up</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-      body {
-        font-family: 'Inter', sans-serif;
-      }
-    </style>
-  </head>
-  <body class="bg-gradient-to-br from-[#0f0f0f] to-[#1e1e1e] text-white min-h-screen flex items-center justify-center px-4">
-    <div class="w-full max-w-md bg-[#181818] p-8 rounded-2xl shadow-xl border border-neutral-700">
-      <h2 class="text-3xl font-extrabold text-center mb-6">Create Your Account</h2>
-      <form class="space-y-5">
-        <div>
-          <label class="block mb-1 text-sm font-semibold text-gray-300">Username</label>
-          <input type="text" placeholder="e.g. yourname" class="w-full px-4 py-2 rounded-lg bg-[#2a2a2a] border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-green-500" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-semibold text-gray-300">Email</label>
-          <input type="email" placeholder="you@email.com" class="w-full px-4 py-2 rounded-lg bg-[#2a2a2a] border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-green-500" />
-        </div>
-        <div>
-          <label class="block mb-1 text-sm font-semibold text-gray-300">Password</label>
-          <input type="password" placeholder="••••••••" class="w-full px-4 py-2 rounded-lg bg-[#2a2a2a] border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-green-500" />
-        </div>
-        <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-2 rounded-xl transition-all">
-          Sign Up
-        </button>
-      </form>
-      <p class="text-center text-sm text-gray-400 mt-6">
-        Already have an account?
-        <a href="#" class="text-green-400 hover:underline">Log in</a>
-      </p>
-    </div>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Main Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-900 text-white min-h-screen flex flex-col items-center justify-center gap-6">
+  <h1 class="text-4xl font-bold">Welcome 👋</h1>
+  <div class="space-y-4">
+    <a href="login.html" class="block w-60 text-center bg-blue-500 hover:bg-blue-600 py-3 rounded-xl font-semibold">Login</a>
+    <a href="signup.html" class="block w-60 text-center bg-green-500 hover:bg-green-600 py-3 rounded-xl font-semibold">Sign Up</a>
+    <a href="https://your-link.com" class="block w-60 text-center bg-purple-500 hover:bg-purple-600 py-3 rounded-xl font-semibold">Your Custom Link</a>
+    <!-- copy the button above to add more links -->
+  </div>
+</body>
 </html>
