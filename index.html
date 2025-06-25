@@ -3,110 +3,169 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Minecraft Skin Editor</title>
+  <title>PNGskin - Minecraft Skin Generator</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0e0e0e;
-      color: white;
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #2b2b2b;
+      color: #f0f0f0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
+      padding: 2rem;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    header img {
+      width: 32px;
     }
 
     h1 {
-      margin-bottom: 30px;
-      color: #00ffaa;
-      font-size: 2.5rem;
+      font-size: 2rem;
+      color: #00ff88;
+    }
+
+    #upload-section, #editor {
+      background-color: #1e1e1e;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+      max-width: 900px;
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    #upload-section {
+      display: block;
+      text-align: center;
+    }
+
+    #upload-section p {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    #upload-section input[type="file"] {
+      background-color: #00ff88;
+      color: #000;
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
 
     #editor {
-      background: #1a1a1a;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 0 25px rgba(0, 255, 170, 0.25);
       display: none;
-      flex-direction: column;
+    }
+
+    .side-by-side {
+      display: flex;
+      justify-content: space-around;
       align-items: center;
-      width: 600px;
-      max-width: 90vw;
+      margin: 2rem 0;
+    }
+
+    .side-by-side img, canvas {
+      border-radius: 12px;
+      border: 2px solid #00ff88;
     }
 
     canvas {
-      margin: 20px 0;
-      border: 2px solid #00ffaa;
-      border-radius: 10px;
-      width: 256px;
-      height: 512px; /* 64x128 Minecraft skin shape */
+      width: 128px;
+      height: 256px;
       image-rendering: pixelated;
-    }
-
-    input[type="range"] {
-      width: 250px;
-      margin: 8px 0;
     }
 
     .controls {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      width: 100%;
+      gap: 1rem;
+      margin-top: 2rem;
     }
 
     .control-group {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    #upload-section {
-      display: flex;
       flex-direction: column;
-      align-items: center;
-      background: #1a1a1a;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 0 30px rgba(0, 255, 170, 0.2);
+      gap: 0.5rem;
     }
 
-    #upload-section input[type="file"] {
-      margin-top: 10px;
+    .control-label {
+      font-size: 1rem;
+      color: #00ff88;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .btn {
+      background-color: #00ff88;
+      color: #000;
+      font-weight: bold;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
-  <h1>Minecraft Skin Editor</h1>
+  <header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Minecraft_Logo.svg" alt="icon">
+    <h1>PNGskin</h1>
+  </header>
+
   <div id="upload-section">
-    <p>Select a Minecraft skin (.png) to begin:</p>
+    <p>PNGskin is a Minecraft Skin Generator that turns images into skins.</p>
     <input type="file" accept="image/png" id="upload" />
+    <div class="side-by-side">
+      <div>
+        <h3>Start</h3>
+        <img id="startPreview" src="" width="128" />
+      </div>
+      <div style="font-size: 2rem;">➡️</div>
+      <div>
+        <h3>Finish</h3>
+        <canvas id="skinCanvas" width="64" height="128"></canvas>
+      </div>
+    </div>
   </div>
 
   <div id="editor">
-    <canvas id="skinCanvas" width="64" height="128"></canvas>
+    <h2 style="color:#00ff88">Edit Image</h2>
+    <p>Use the sliders to edit the skin to your liking.</p>
     <div class="controls">
       <div class="control-group">
-        <label for="scale">Scale</label>
-        <input type="range" id="scale" min="0.5" max="3" step="0.1" value="1">
-      </div>
-      <div class="control-group">
-        <label for="moveX">Move X</label>
+        <span class="control-label">🔁 Move Left & Right</span>
         <input type="range" id="moveX" min="-64" max="64" step="1" value="0">
       </div>
       <div class="control-group">
-        <label for="moveY">Move Y</label>
+        <span class="control-label">🔁 Move Up & Down</span>
         <input type="range" id="moveY" min="-64" max="64" step="1" value="0">
       </div>
+      <div class="control-group">
+        <span class="control-label">🖼 Size Aspect Ratio</span>
+        <input type="range" id="scale" min="0.5" max="3" step="0.1" value="1">
+      </div>
     </div>
+    <button class="btn">✅ Finish Edit</button>
   </div>
 
   <script>
     const canvas = document.getElementById("skinCanvas");
     const ctx = canvas.getContext("2d");
     const upload = document.getElementById("upload");
+    const startPreview = document.getElementById("startPreview");
     const uploadSection = document.getElementById("upload-section");
     const editor = document.getElementById("editor");
     const scaleSlider = document.getElementById("scale");
@@ -131,8 +190,9 @@
         const reader = new FileReader();
         reader.onload = function (evt) {
           image.onload = () => {
-            uploadSection.style.display = "none";
-            editor.style.display = "flex";
+            startPreview.src = image.src;
+            uploadSection.style.display = "block";
+            editor.style.display = "block";
             drawImage();
           };
           image.src = evt.target.result;
